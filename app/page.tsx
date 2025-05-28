@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Separator } from "@/components/ui/separator"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Wallet, User, Search, Plus } from "lucide-react"
+import { Wallet, User, Search, Plus, LogOut } from "lucide-react"
 
 // Contract ABI
 const CONTRACT_ABI = [
@@ -103,6 +103,20 @@ export default function UserInfoDApp() {
     } catch (err: any) {
       setError(`Failed to connect wallet: ${err.message}`)
     }
+  }
+
+  // Disconnect wallet
+  const disconnectWallet = () => {
+    setProvider(null)
+    setSigner(null)
+    setContract(null)
+    setAccount("")
+    setCurrentUserData(null)
+    setSearchedUserData(null)
+    setSearchAddress("")
+    setFormData({ name: "", age: "", profession: "", bio: "" })
+    setError("")
+    setSuccess("Wallet disconnected successfully!")
   }
 
   // Add user info
@@ -330,8 +344,12 @@ export default function UserInfoDApp() {
                   Connected Account
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="space-y-4">
                 <p className="font-mono text-sm bg-gray-100 p-2 rounded">{account}</p>
+                <Button onClick={disconnectWallet} variant="outline" size="sm" className="flex items-center gap-2">
+                  <LogOut className="h-4 w-4" />
+                  Disconnect Wallet
+                </Button>
               </CardContent>
             </Card>
 
@@ -416,7 +434,7 @@ export default function UserInfoDApp() {
                     <div className="space-y-3">
                       <div>
                         <Label className="text-sm font-medium text-gray-500">Name</Label>
-                        <p>{currentUserData.name}</p>
+                        <p className="text-lg font-semibold">{currentUserData.name}</p>
                       </div>
                       <div>
                         <Label className="text-sm font-medium text-gray-500">Age</Label>
@@ -428,7 +446,7 @@ export default function UserInfoDApp() {
                       </div>
                       <div>
                         <Label className="text-sm font-medium text-gray-500">Bio</Label>
-                        <p>{currentUserData.bio}</p>
+                        <p className="text-sm text-gray-700">{currentUserData.bio}</p>
                       </div>
                     </div>
                   ) : (
